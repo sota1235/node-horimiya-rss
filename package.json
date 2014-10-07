@@ -1,0 +1,23 @@
+{
+  "name": "node_horimiya_rss",
+  "version": "0.0.1",
+  "description": "RSS reader for horimiya.",
+  "main": "app.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sota1235/node-horimiya-rss"
+  },
+  "keywords": [
+    "RSS",
+    "horimiya"
+  ],
+  "author": "sota1235",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sota1235/node-horimiya-rss/issues"
+  },
+  "homepage": "https://github.com/sota1235/node-horimiya-rss"
+}
