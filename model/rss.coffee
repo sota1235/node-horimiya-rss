@@ -4,13 +4,17 @@
 
 ###
 
+Buffer  = require('buffer').Buffer
+
+request = require 'request'
+cheerio = require 'cheerio'
+iconv   = require 'iconv'
 RSS = require 'rss'
 
 module.exports = class RSS_Maker
 
   constructor: ->
-    @db_url   = 'http://dka-hero.com'
-    @list_url = '/h_01.html'
+    @db_url   = 'http://dka-hero.com/h_01.html'
     @feedOptinos =
       'title'       : '読解アヘン - 堀さんと宮村くん'
       'description' : 'Web Comic by HERO'
@@ -21,7 +25,18 @@ module.exports = class RSS_Maker
 
   getUrlList: (callback = ->) ->
     # TODO: それぞれのコミックページのURLリストをcallback
-    callback url_list
+    url_list = []
+    request.get {url: @db_url, encoding: 'binary'}, (err, res, body) ->
+      if err
+        callback err
+        return
+      conv = new iconv.Iconv 'CP932', 'UTF-8//TRANSLIT//IGNORE'
+      body = new Buffer body, 'binary'
+      body = conv.convert body
+      $ = cheerio.load body
+      contents = cheerio.load $("a[target='contents']").each () ->
+        url_list.push $(this).attr("href")
+      callback null, url_list
 
   getItemOptions: (url, callbak = ->) ->
     # TODO: itemOptions用の配列を作成、callback
@@ -29,7 +44,7 @@ module.exports = class RSS_Maker
 
   generateItems: (feed, callback = ->) ->
     item = []
-    getUrlList (list) ->
+    getUrlList (err, list) ->
       for url in list
         itemOptions = null
         # TODO: itemOptions内をスクレイピング
@@ -41,4 +56,4 @@ module.exports = class RSS_Maker
   generateRSS: (callback = ->) ->
     feed = new RSS @feedOptions
     generateItems feed, (feed) ->
-      callback feed.toString
+      callback feed.xml 4

@@ -10,6 +10,12 @@
     "type": "git",
     "url": "https://github.com/sota1235/node-horimiya-rss"
   },
+  "dependencies": {
+    "request": "*",
+    "cheerio": "*",
+    "rss"    : "*",
+    "iconv"  : "*"
+  },
   "keywords": [
     "RSS",
     "horimiya"
