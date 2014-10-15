@@ -14,7 +14,7 @@ RSS = require 'rss'
 module.exports = class RSS_Maker
 
   constructor: ->
-    @db_url   = 'http://dka-hero.com/h_01.html'
+    @db_url   = 'http://dka-hero.com/'
     @feedOptinos =
       'title'       : '読解アヘン - 堀さんと宮村くん'
       'description' : 'Web Comic by HERO'
@@ -23,12 +23,27 @@ module.exports = class RSS_Maker
       'image_url'   : 'http://dka-hero.com/banner.jpg'
       'author'      : 'sota1235'
 
-  getUrlList: (callback = ->) ->
-    # TODO: それぞれのコミックページのURLリストをcallback
-    url_list = []
-    request.get {url: @db_url, encoding: 'binary'}, (err, res, body) ->
+  # 引数のページコンテンツを取得
+  # callback err, contents
+  getPageContents: (url, callback = ->) ->
+    request.get {url: @db_url + url, encoding: 'binary'}, (err, res, body) ->
       if err
-        callback err
+        callback err, null
+        return
+      re   = /<body>(.+)<\/body>/
+      conv = new iconv.Iconv 'CP932', 'UTF-8//TRANSLIT//IGNORE'
+      body = new Buffer body, 'binary'
+      body = conv.convert body
+      body = body.toString().replace(/[\n\r]/g, '')
+      callback null, body.match(re)[1]
+
+  # 各話のurl取得
+  # callback err, list
+  getUrlList: (callback = ->) ->
+    url_list = []
+    request.get {url: @db_url + 'h_01.html', encoding: 'binary'}, (err, res, body) ->
+      if err
+        callback err, null
         return
       conv = new iconv.Iconv 'CP932', 'UTF-8//TRANSLIT//IGNORE'
       body = new Buffer body, 'binary'
