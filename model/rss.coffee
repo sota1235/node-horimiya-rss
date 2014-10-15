@@ -35,7 +35,9 @@ module.exports = class RSS_Maker
       body = conv.convert body
       $ = cheerio.load body
       contents = cheerio.load $("a[target='contents']").each () ->
-        url_list.push $(this).attr("href")
+        href = $(this).attr "href"
+        if /^hm.+\/pict_com_\d+\.html$/.test href
+          url_list.push href
       callback null, url_list
 
   getItemOptions: (url, callbak = ->) ->
