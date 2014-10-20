@@ -14,7 +14,8 @@
     "request": "*",
     "cheerio": "*",
     "rss"    : "*",
-    "iconv"  : "*"
+    "iconv"  : "*",
+    "async"  : "*"
   },
   "keywords": [
     "RSS",
