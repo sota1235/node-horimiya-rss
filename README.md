@@ -5,7 +5,7 @@ RSS reader for horimiya
 
 ### Description
 
-[読解アヘン](http://dka-hero.com)の堀さんと宮村くんのRSSリーダーです。
+[読解アヘン](http://dka-hero.com)の堀さんと宮村くんのRSSジェネレータです。
 
 ([Ruby](https://github.com/sota1235/horimiya_rss)つらたんなのでNode.jsに移行)
 
