@@ -29,6 +29,6 @@ app.get '/', (req, res) ->
   res.send 'Please reconnect to <a href="/feed">this page</a>.'
 
 app.get '/feed', (req, res) ->
-  res.render 'index', {body: rss}
+  res.render 'feed', {body: rss}
 
 app.listen 3000
