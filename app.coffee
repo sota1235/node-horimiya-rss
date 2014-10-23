@@ -3,6 +3,7 @@ express = require 'express'
 
 app = express()
 
+app.set 'port', process.env.PORT || 3000
 app.set 'view engine', 'jade'
 app.set 'views', path.resolve 'views/'
 
@@ -33,4 +34,4 @@ app.get '/feed', (req, res) ->
     "Content-Type": "text/xml"
   res.send rss
 
-app.listen 3000
+app.listen app.get 'port'
