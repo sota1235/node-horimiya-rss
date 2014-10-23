@@ -11,7 +11,8 @@
     "url": "https://github.com/sota1235/node-horimiya-rss"
   },
   "dependencies": {
-    "coffee-script": "1.8.0"
+    "coffee-script": "1.8.0",
+    "express"      : "4.9.8",
     "es6-promise"  : "*",
     "request"      : "*",
     "cheerio"      : "*",
