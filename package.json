@@ -11,11 +11,12 @@
     "url": "https://github.com/sota1235/node-horimiya-rss"
   },
   "dependencies": {
-    "request": "*",
-    "cheerio": "*",
-    "rss"    : "*",
-    "iconv"  : "*",
-    "async"  : "*"
+    "es6-promise": "*",
+    "request"    : "*",
+    "cheerio"    : "*",
+    "rss"        : "*",
+    "iconv"      : "*",
+    "async"      : "*"
   },
   "keywords": [
     "RSS",
