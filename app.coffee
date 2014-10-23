@@ -22,7 +22,7 @@ setInterval () ->
     rss = result
   .catch (err) ->
     console.error err
-, 1000 * 10
+, 1000 * 60 * 10
 
 # Routing
 app.get '/', (req, res) ->
