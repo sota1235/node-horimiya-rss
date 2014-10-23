@@ -4,8 +4,8 @@ generate RSS2.0
 
 ###
 
-Buffer  = require('buffer').Buffer
-Promise = require('es6-promise').Promise
+{Buffer}  = require('buffer')
+{Promise} = require('es6-promise')
 
 request = require 'request'
 cheerio = require 'cheerio'
@@ -15,37 +15,34 @@ RSS     = require 'rss'
 
 module.exports = class RSS_Maker
 
-  # comiclist
-  #   'title'      :
-  #   'url'        :
-  #   'description':
   constructor: ->
-    @url      = 'http://dka-hero.com/'
     @feedOptinos =
       'title'       : '読解アヘン - 堀さんと宮村くん'
       'description' : 'Web Comic by HERO'
       'feed_url'    : 'http://horimiya-rss.herokuapp.com'
-      'site_url'    : @url
+      'site_url'    : 'http://dka-hero.com/'
       'image_url'   : 'http://dka-hero.com/banner.jpg'
       'author'      : 'sota1235'
 
   # URLからHTML全文を取得
   # 複数ページある場合はbody部を足し算してreturn
   # resolve itemOption
-  _getOption: (url, title) ->
-    host = 'http://dka-hero.com/'
+  _getOption: (uri, title) ->
     return new Promise (resolve, reject) ->
-      request.get {url: host + url, encoding: 'binary'}, (err, res, html) ->
+      param =
+        url     : 'http://dka-hero.com/' + uri
+        encoding: 'binary'
+      request.get param, (err, res, html) ->
         if err
-          reject 'hello' + err
+          reject err
         conv = new iconv.Iconv 'CP932', 'UTF-8//TRANSLIT//IGNORE'
         html = new Buffer html, 'binary'
         html = conv.convert(html).toString().replace /[\n\r]/g, ''
-        body = html.match(/<body(.+)<\/body>/)
+        body = html.match(/<body.*?>(.+?)<\/body>/)[1]
         itemOption =
           'title'      : title
-          'url'        : url
-          'description': body[1]
+          'url'        : 'http://dka-hero.com/' + uri
+          'description': body
         resolve itemOption
 
   # 各話のurl, title取得
@@ -83,7 +80,7 @@ module.exports = class RSS_Maker
           promises.push _getOption url, title
         return promises
       .then (promises) ->
-        console.log 'make promises is completed'
+        console.log 'Make promises is completed'
         Promise.all promises
         .then (options) ->
           console.log 'Promise.all is completed'
