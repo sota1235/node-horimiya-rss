@@ -8,6 +8,7 @@ generate RSS2.0
 {Promise} = require('es6-promise')
 
 request = require 'request'
+path    = require 'path'
 cheerio = require 'cheerio'
 iconv   = require 'iconv'
 async   = require 'async'
@@ -32,6 +33,7 @@ module.exports = class RSS_Maker
       param =
         url     : 'http://dka-hero.com/' + uri
         encoding: 'binary'
+      dir = 'http://dka-hero.com/' + path.dirname uri
       request.get param, (err, res, html) ->
         if err
           reject err
@@ -39,6 +41,7 @@ module.exports = class RSS_Maker
         html = new Buffer html, 'binary'
         html = conv.convert(html).toString().replace /[\n\r]/g, ''
         body = html.match(/<body.*?>(.+?)<\/body>/)[1]
+        body = body.replace /(src=")(.*?)(")/g, "$1" + dir + "/$2$3"
         itemOption =
           'title'      : title
           'url'        : 'http://dka-hero.com/' + uri
