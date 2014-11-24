@@ -35,3 +35,15 @@ app.get '/feed', (req, res) ->
   res.send rss
 
 app.listen app.get 'port'
+
+# Herokuが寝ないようにする
+# http://gyazz.masuilab.org/Herokuが寝ないようにする
+return unless /^https?:\/\/.+/.test process.env.HEROKU_URL
+
+setInterval ->
+  debug 'ping'
+  url = "#{process.env.HEROKU_URL}?keepalive=#{Date.now()}"
+  request.head url, (err, res) ->
+    if res.statusCode is 200
+      debug 'pong'
+, 60 * 1000 * 20 # 20 min
